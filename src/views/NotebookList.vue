@@ -73,7 +73,7 @@ export default {
       const that = this;
       this.$confirm({
         title: '确定要删除这个笔记本？',
-        content: () => <div style="color:red;">删除后可以在回收站恢复</div>,
+        content: () => <div style="color:red;">需要先彻底删除这个笔记本中的笔记</div>,
         async onOk() {
           await that.deleteNotebook({notebookId: notebook.id});
         },

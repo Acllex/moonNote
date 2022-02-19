@@ -38,8 +38,8 @@ export default {
   name: "Login",
   data() {
     return {
-      isRegister: true,
-      isLogin: false,
+      isRegister: false,
+      isLogin: true,
       user: {
         username: '',
         password: '',
@@ -61,7 +61,6 @@ export default {
     async onSubmit(e) {
       this.ruler()
       let {data,msg} = await Auth[e]({username: this.user.username, password: this.user.password});
-      console.log(data)
       if (msg==='创建成功'||msg==='登录成功'){
         Bus.$emit('userInfo', {username: data.username})
         await this.$router.push({path: '/notebooks'})

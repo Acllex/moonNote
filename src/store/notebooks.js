@@ -46,8 +46,8 @@ const notebooks = {
             commit('updateNotebook', payload);
         },
         async deleteNotebook({commit}, payload) {
-            const {msg} = await Notebooks.deleteNotebook(payload.notebookId);
-            message.success(msg)
+            const res = await Notebooks.deleteNotebook(payload.notebookId);
+            if (res)message.success(res.msg)
             commit('deleteNotebook', payload)
         }
     }

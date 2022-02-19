@@ -1,6 +1,6 @@
 <template>
   <div id="note">
-    <NoteSidebar></NoteSidebar>
+    <NoteSidebar v-show="isSidebar"></NoteSidebar>
     <div class="note-detail">
       <div class="note-empty" v-show="!curNote.id">请选择笔记</div>
       <div class="note-detail-ct" v-show="curNote.id">
@@ -8,13 +8,18 @@
           <span> 创建日期: {{ curNote.createdAtFriendly }}</span>
           <span> 更新日期: {{ curNote.updatedAtFriendly }}</span>
           <span> {{ statusText }}</span>
-          <a-icon @click="removeNote" :style="{float:'right',marginLeft:'4px',fontSize:'20px',cursor: 'pointer'}" type="delete" />
-          <a-icon @click="change" :style="{float:'right',marginRight:'8px',fontSize:'20px',cursor: 'pointer'}" :type="editAndEye" />
+          <a-icon @click="removeNote" :style="{float:'right',marginLeft:'4px',fontSize:'20px',cursor: 'pointer'}"
+                  type="delete"/>
+          <a-icon @click="change" :style="{float:'right',marginRight:'8px',fontSize:'20px',cursor: 'pointer'}"
+                  :type="editAndEye"/>
+          <a-icon @click="changeSidebar" :type="fullscreenType"
+                  :style="{float:'right',marginRight:'12px',fontSize:'20px',cursor: 'pointer'}"/>
         </div>
         <div class="note-title">
-          <input v-show="isShowPreview" type="text" v-model="curNote.title" @input="updateNoteContent" @keydown="statusText='正在输入...'"
+          <input v-show="isShowPreview" type="text" v-model="curNote.title" @input="updateNoteContent"
+                 @keydown="statusText='正在输入...'"
                  placeholder="输入标题">
-          <span v-show="!isShowPreview">{{curNote.title}}</span>
+          <span v-show="!isShowPreview">{{ curNote.title }}</span>
         </div>
         <div class="editor">
           <textarea v-show="isShowPreview" v-model="curNote.content" @input="updateNoteContent"
@@ -42,28 +47,34 @@ export default {
       statusText: '笔记未改动',
       isShowPreview: true,
       editAndEye: 'eye',
+      isSidebar: true,
+      fullscreenType: 'fullscreen',
     }
   },
-  methods:{
-    ...mapActions(['updateNote','deleteNote']),
-    updateNoteContent: _.debounce(async function (){
-      await this.updateNote({noteId: this.curNote.id,title:this.curNote.title, content: this.curNote.content})
-      this.statusText='笔记已保存';
-    },1000),
-    async removeNote(){
+  methods: {
+    ...mapActions(['updateNote', 'deleteNote']),
+    updateNoteContent: _.debounce(async function () {
+      await this.updateNote({noteId: this.curNote.id, title: this.curNote.title, content: this.curNote.content})
+      this.statusText = '笔记已保存';
+    }, 1000),
+    async removeNote() {
       await this.deleteNote({noteId: this.curNote.id})
       await this.$router.replace({path: `/note?noteId=${this.curNote.id}&notebookId=${this.curBook.id}`})
     },
-    change(){
+    change() {
       this.isShowPreview = !this.isShowPreview;
-      this.editAndEye = this.isShowPreview===true?'eye':'edit';
+      this.editAndEye = this.isShowPreview === true ? 'eye' : 'edit';
+    },
+    changeSidebar() {
+      this.isSidebar = !this.isSidebar;
+      this.fullscreenType = this.isSidebar === true?'fullscreen':'fullscreen-exit'
     }
   },
-  computed:{
-    previewContent(){
-      return md.render(this.curNote.content||'')
+  computed: {
+    previewContent() {
+      return md.render(this.curNote.content || '')
     },
-    ...mapGetters(['curNote','curBook'])
+    ...mapGetters(['curNote', 'curBook'])
   },
   beforeRouteUpdate(to, from, next) {
     this.$store.commit('setCurNote', {curNoteId: Number(to.query.noteId)})
@@ -88,6 +99,7 @@ export default {
   flex-direction: column;
   overflow: hidden;
   padding-bottom: 30px;
+
   .note-detail-ct {
     height: 100%;
   }

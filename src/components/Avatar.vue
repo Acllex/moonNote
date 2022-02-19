@@ -24,7 +24,6 @@ export default {
   },
   async created() {
     Bus.$on('userInfo', msg=>{
-      console.log(msg)
       this.username = msg.username;
     })
     let {isLogin, data} = await Auth['getInfo']();

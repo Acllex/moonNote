@@ -1,4 +1,5 @@
 import Trash from '@/apis/trash';
+import {message} from 'ant-design-vue';
 
 const trash = {
     state:{
@@ -29,12 +30,12 @@ const trash = {
         },
         async deleteTrashNote({commit}, payload){
             const {msg} = await Trash.deleteNote({noteId: payload.noteId});
-            console.log(msg)
+            message.success(msg)
             commit('deleteTrashNote', payload);
         },
         async revertTrashNote({commit},payload){
-            const res = await Trash.revertNote({noteId: payload.noteId});
-            console.log(res);
+            const {msg} = await Trash.revertNote({noteId: payload.noteId});
+            message.success(msg)
             commit('deleteTrashNote', payload);
         }
     }

@@ -1,35 +1,29 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/views/Home.vue'
-import Login from '@/views/Login'
-import NotebookList from '@/views/NotebookList'
-import NoteDetail from '@/views/NoteDetail'
-import TrashDetail from '@/views/TrashDetail'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/notebooks'
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: ()=>import('../views/Login')
   },
   {
     path: '/notebooks',
-    component: NotebookList
+    component: ()=>import('../views/NotebookList')
   },
   {
     path: '/note',
-    component: NoteDetail
+    component: ()=>import('../views/NoteDetail')
   },
   {
     path: '/trash',
-    component: TrashDetail
+    component: ()=>import('../views/TrashDetail')
   }
 ]
 

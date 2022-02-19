@@ -39,7 +39,6 @@ export default {
     ...mapActions(['revertTrashNote', 'deleteTrashNote']),
     async removeNote() {
       const that = this;
-      console.log(this.curTrashNote)
       this.$confirm({
         title: '确定要彻底删除这个笔记吗？',
         content: () => <div style="color:red;">将彻底删除笔记</div>,
