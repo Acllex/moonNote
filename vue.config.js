@@ -12,4 +12,11 @@ module.exports = {
             },
         },
     },
+    chainWebpack(config){
+        //修改htmlWebpackPlugin
+        config.plugin('html').tap(args => {
+            args[0].title = 'MoonNote';
+            return args;
+        })
+    }
 };
