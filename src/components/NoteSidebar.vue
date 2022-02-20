@@ -1,22 +1,20 @@
 <template>
   <div id="node-sidebar">
     <header>
-      <a-dropdown class="dropdowns" :trigger="['click']" placement="bottomCenter">
-        <a-tooltip placement="right">
-          <template slot="title">
-            <span>{{ curBook.title }}</span>
-          </template>
+      <div class="no-book" v-if="notebooks.length===0">
+        <span>没有笔记本</span>
+      </div>
+        <a-dropdown v-if="notebooks.length!==0" class="dropdowns" :trigger="['click']" placement="bottomCenter">
           <a class="ant-dropdown-link" @click="e => e.preventDefault()">{{ curBook.title }}
             <a-icon type="down"/>
           </a>
-        </a-tooltip>
-        <a-menu slot="overlay">
-          <a-menu-item @click="selectBook(notebook)" v-for="notebook in notebooks" :key="notebook.id">
-            <span>{{ notebook.title }}</span>
-          </a-menu-item>
-        </a-menu>
-      </a-dropdown>
-      <a-button @click="addNote({notebookId: curBook.id})" class="right-button" size="small">添加笔记</a-button>
+          <a-menu slot="overlay">
+            <a-menu-item @click="selectBook(notebook)" v-for="notebook in notebooks" :key="notebook.id">
+              <span>{{ notebook.title }}</span>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+        <a-button v-if="notebooks.length!==0" @click="addNote({notebookId: curBook.id})" class="right-button" size="small">添加笔记</a-button>
     </header>
     <main>
       <div class="menu">
@@ -88,7 +86,11 @@ export default {
     align-items: center;
     background-color: #f7f7f7;
     border-bottom: 1px solid #ccc;
-
+    .no-book{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
     .dropdowns {
       position: absolute;
       left: 50%;

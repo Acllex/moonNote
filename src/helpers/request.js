@@ -21,6 +21,7 @@ export default async function(url, type='GET', data={}){
     try {
         const {status,data} = await axios(option);
         if (status!==200){
+            if (data.msg==='缺少 notebookId 参数或者 notebookId 无效')return;
             message.error(data.msg);
             return;
         }
