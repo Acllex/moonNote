@@ -37,11 +37,6 @@ export default {
       await Auth.logout();
       await this.$router.push({path: '/login'})
     }
-  },
-  async created() {
-    let {isLogin} = await Auth.getInfo();
-    if (this.$route.path === '/login') return;
-    if (!isLogin) await this.$router.push({path: '/login'})
   }
 };
 </script>

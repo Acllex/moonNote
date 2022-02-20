@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Auth from '@/apis/auth'
 
 Vue.use(VueRouter)
 
@@ -32,5 +33,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
+router.beforeEach(async (to,from,next)=>{
+  if (to.path === '/login') return next();
+  const {isLogin} = await Auth.getInfo();
+  if (!isLogin) return next('/login');
+  next();
+})
 export default router
